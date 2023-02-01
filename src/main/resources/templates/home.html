@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>My blog</title>
+</head>
+<body>
+<div class="container">
+    <h1>Arniepan's Blog</h1>
+    <hr/>
+    <ul>
+        <li>
+            <a th:href="@{'/posts/new'}">New Post</a>
+        </li>
+    </ul>
+    <div class="posts-container">
+        <dix class="post" th:each="post : ${posts}">
+            <h2>
+                <a th:href="@{'/posts/' + ${post.id}}"
+                   th:text="${post.title}">Title</a>
+            </h2>
+            <h5 th:text="'Written by ' + ${post.account.firstName}">Account First Name</h5>
+            <h5 th:text="'Published on ' + ${post.createdAt}">Create At</h5>
+            <p th:text="${post.body}">Body Text</p>
+            <br/>
+        </dix>
+    </div>
+    <hr/>
+    <ul sec:authorize="!isAuthenticated()">
+        <li><a th:href="@{/register}">Register</a></li>
+        <li><a th:href="@{/login}">Login</a></li>
+    </ul>
+    <div sec:authorize="isAuthenticated()">
+        <form action="#"
+              th:action="@{/logout}"
+              method="POST">
+            <div>
+                <label>Hi, <span sec:authentication="name">Username</span></label>
+            </div>
+            <button type="submit">Logout</button>
+
+        </form>
+    </div>
+</div>
+</body>
+</html>
