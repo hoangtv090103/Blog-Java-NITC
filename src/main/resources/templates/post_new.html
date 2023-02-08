@@ -8,7 +8,9 @@
 </head>
 <body>
 <div class="container">
-    <a th:href="@{/}">Home</a>
+    <a th:href="@{/}">
+        <button class="btn btn-primary btn-lg">Home</button>
+    </a>
     <form action="#"
           th:action="@{'/posts/new'}"
           th:object="${post}"
