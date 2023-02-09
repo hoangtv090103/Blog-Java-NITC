@@ -6,6 +6,8 @@ import com.example.arniepanblog.services.AccountService;
 import com.example.arniepanblog.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.naming.Binding;
 import java.util.Optional;
 
 @Controller
@@ -26,6 +27,18 @@ public class PostController {
     @Autowired
     private AccountService accountService;
 
+    public String getCurrentUser()
+    {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails)
+        {
+            return ((UserDetails) principal).getUsername();
+        }
+        else
+        {
+            return principal.toString();
+        }
+    }
     @GetMapping("/posts/{id}")
     public String getPost(@PathVariable Long id, Model model) {
         //Find the post by
@@ -43,7 +56,7 @@ public class PostController {
 
     @GetMapping("/posts/new")
     public String createNewPost(Model model) {
-        Optional<Account> optionalAccount = accountService.findByEmail("admin.admin@gmail.com");
+        Optional<Account> optionalAccount = accountService.findByEmail(getCurrentUser());
         if (optionalAccount.isPresent()) {
             Post post = new Post();
             post.setAccount(optionalAccount.get());

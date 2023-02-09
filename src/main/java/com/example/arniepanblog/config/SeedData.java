@@ -62,19 +62,6 @@ public class SeedData implements CommandLineRunner {
 
             accountService.save(account1);
             accountService.save(account2);
-
-            Post post1 = new Post();
-            post1.setTitle("Title of post 1");
-            post1.setBody("The body of post 1");
-            post1.setAccount(account1);
-
-            Post post2 = new Post();
-            post2.setTitle("Title of post 2");
-            post2.setBody("The body of post 2");
-            post2.setAccount(account2);
-
-            postService.save(post1);
-            postService.save(post2);
         }
     }
 }

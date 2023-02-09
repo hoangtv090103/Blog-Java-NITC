@@ -2,11 +2,8 @@ package com.example.arniepanblog.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -21,9 +18,9 @@ public class Post {
     @Column(columnDefinition = "TEXT")
     private String body;
 
-    private LocalDateTime createdAt;
+    private String createdAt;
 
-    private LocalDateTime modifiedAt;
+    private String modifiedAt;
 
     @NotNull
     @ManyToOne

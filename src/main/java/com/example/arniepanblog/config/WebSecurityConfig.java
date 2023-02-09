@@ -9,51 +9,50 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Configuration
+import static org.apache.catalina.webresources.TomcatURLStreamHandlerFactory.disable;
+
 @EnableWebSecurity
+@Configuration
 public class WebSecurityConfig {
 
+    private static final String[] ALLOWLIST = {
+            "/",
+            "/login",
+            "/register",
+            "/h2-console/*"
+    };
+
     @Bean
-    public static PasswordEncoder passwordEncoder()
-    {
+    public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(
-                                "/",
-                                "/login",
-                                "/register",
-                                "/h2-console",
-                                "/h2-console/*"
-                        )
-                        .permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/h2-console/*").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .logout((logout) -> logout.permitAll());
-
-        // Setting login handling and validation
-        http
+                .authorizeHttpRequests(requests -> {
+                    requests.requestMatchers(ALLOWLIST).permitAll();
+                    requests.anyRequest().authenticated();
+                })
                 .formLogin()
                 .loginPage("/login")
-                .loginProcessingUrl("/login").usernameParameter("email").passwordParameter("password")
+                .usernameParameter("email")
+                .passwordParameter("password")
                 .defaultSuccessUrl("/", true)
                 .failureUrl("/login?error")
                 .permitAll()
                 .and()
                 .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout")
+                .logoutSuccessUrl("/")
                 .and()
                 .httpBasic();
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
 
-
-        //TODO: When you move away from h2-console you can remove theses
+        return http.build();
+    //TODO: When you move away from h2-console you can remove theses
 //        http.csrf().disable();
 //        http.headers().frameOptions().disable();
-        return http.build();
-    }
+}
 }
