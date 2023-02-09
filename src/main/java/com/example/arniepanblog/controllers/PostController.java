@@ -27,18 +27,15 @@ public class PostController {
     @Autowired
     private AccountService accountService;
 
-    public String getCurrentUser()
-    {
+    public String getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserDetails)
-        {
+        if (principal instanceof UserDetails) {
             return ((UserDetails) principal).getUsername();
-        }
-        else
-        {
+        } else {
             return principal.toString();
         }
     }
+
     @GetMapping("/posts/{id}")
     public String getPost(@PathVariable Long id, Model model) {
         //Find the post by
@@ -92,11 +89,9 @@ public class PostController {
 
     @PostMapping("posts/{id}")
     @PreAuthorize("isAuthenticated()")
-    public String updatePost(@PathVariable Long id, Post post, BindingResult result, Model model)
-    {
+    public String updatePost(@PathVariable Long id, Post post, BindingResult result, Model model) {
         Optional<Post> optionalPost = postService.getById(id);
-        if (optionalPost.isPresent())
-        {
+        if (optionalPost.isPresent()) {
             Post existingPost = optionalPost.get();
             existingPost.setTitle(post.getTitle());
             existingPost.setBody(post.getBody());
@@ -108,17 +103,13 @@ public class PostController {
 
     @GetMapping("/posts/{id}/delete")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public String deletePost(@PathVariable Long id)
-    {
+    public String deletePost(@PathVariable Long id) {
         Optional<Post> optionalPost = postService.getById(id);
-        if(optionalPost.isPresent())
-        {
+        if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
             postService.delete(post);
             return "redirect:/";
-        }
-        else
-        {
+        } else {
             return "404";
         }
     }

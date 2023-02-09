@@ -33,18 +33,11 @@ public class Account {
     private List<Post> posts;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "account_authority",
-            joinColumns = {@JoinColumn(name = "account_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = " name")})
+    @JoinTable(name = "account_authority", joinColumns = {@JoinColumn(name = "account_id", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = " name")})
     private Set<Authority> authorities = new HashSet<>();
-
 
     @Override
     public String toString() {
-        return "Account{" +
-                ", firstName='" + firstName + "'" +
-                ", lastName='" + lastName + "'" +
-                ", authorities='" + authorities + "'" +
-                "}";
+        return "Account{" + ", firstName='" + firstName + "'" + ", lastName='" + lastName + "'" + ", authorities='" + authorities + "'" + "}";
     }
 }

@@ -20,8 +20,7 @@ public class Authority implements Serializable {
     private String name;
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Authority{" + "name='" + this.name + "'}";
     }
 }
