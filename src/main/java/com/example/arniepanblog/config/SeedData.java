@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Component
@@ -26,42 +27,42 @@ public class SeedData implements CommandLineRunner {
     private AuthorityRepository authorityRepository;
 
     @Override
-    public void run(String... args) throws Exception
-    {
+    public void run(String... args) throws Exception {
         List<Post> posts = postService.getAll();
+        Optional<Account> adminOptionalAccount = accountService.findByEmail("admin.admin@gmail.com");
 
-        if (posts.size() == 0)
-        {
-            Authority user = new Authority();
-            user.setName("ROLE_USER");
-            authorityRepository.save(user);
+        // Create Admin account if it hasn't exist
+        if (posts.size() == 0 && adminOptionalAccount.isEmpty()) {
+//            Authority user = new Authority();
+//            user.setName("ROLE_USER");
+//            authorityRepository.save(user);
 
             Authority admin = new Authority();
             admin.setName("ROLE_ADMIN");
             authorityRepository.save(admin);
 
 
-            Account account1 = new Account();
-            Account account2 = new Account();
+//            Account account1 = new Account();
+            Account adminAccount = new Account();
 
-            account1.setFirstName("user");
-            account1.setLastName("user");
-            account1.setEmail("user.user@gmail.com");
-            account1.setPassword("1");
-            Set<Authority> authoritySet1 = new HashSet<>();
-            authorityRepository.findById("ROLE_USER").ifPresent(authoritySet1::add);
-            account1.setAuthorities(authoritySet1);
+//            account1.setFirstName("user");
+//            account1.setLastName("user");
+//            account1.setEmail("user.user@gmail.com");
+//            account1.setPassword("1");
+//            Set<Authority> authoritySet1 = new HashSet<>();
+//            authorityRepository.findById("ROLE_USER").ifPresent(authoritySet1::add);
+//            account1.setAuthorities(authoritySet1);
 
-            account2.setFirstName("admin");
-            account2.setLastName("admin");
-            account2.setEmail("admin.admin@gmail.com");
-            account2.setPassword("1");
+            adminAccount.setFirstName("admin");
+            adminAccount.setLastName("admin");
+            adminAccount.setEmail("admin.admin@gmail.com");
+            adminAccount.setPassword("superadmin");
             Set<Authority> authoritySet2 = new HashSet<>();
             authorityRepository.findById("ROLE_ADMIN").ifPresent(authoritySet2::add);
-            account2.setAuthorities(authoritySet2);
+            adminAccount.setAuthorities(authoritySet2);
 
-            accountService.save(account1);
-            accountService.save(account2);
+//            accountService.save(account1);
+            accountService.save(adminAccount);
         }
     }
 }
