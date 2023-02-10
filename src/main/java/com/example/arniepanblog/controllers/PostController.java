@@ -4,6 +4,8 @@ import com.example.arniepanblog.models.Account;
 import com.example.arniepanblog.models.Post;
 import com.example.arniepanblog.services.AccountService;
 import com.example.arniepanblog.services.PostService;
+import jakarta.validation.constraints.Null;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -79,17 +81,19 @@ public class PostController {
         //If post exist put it in model
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
+            if (!editDeletePerm(post))
+            {
+                return  "forbidden";
+            }
             model.addAttribute("post", post);
-            return "post_edit";
-        } else {
-            return "404";
+            return  "post_edit";
         }
-
+        return "404";
     }
 
     @PostMapping("posts/{id}")
     @PreAuthorize("isAuthenticated()")
-    public String updatePost(@PathVariable Long id, Post post, BindingResult result, Model model) {
+    public String updatePost(@PathVariable Long id, Post post) {
         Optional<Post> optionalPost = postService.getById(id);
         if (optionalPost.isPresent()) {
             Post existingPost = optionalPost.get();
@@ -102,16 +106,26 @@ public class PostController {
     }
 
     @GetMapping("/posts/{id}/delete")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String deletePost(@PathVariable Long id) {
         Optional<Post> optionalPost = postService.getById(id);
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
+            if(!editDeletePerm(post))
+            {
+                return  "forbidden";
+            }
             postService.delete(post);
             return "redirect:/";
-        } else {
-            return "404";
         }
+        return "404";
+    }
+
+    Boolean editDeletePerm(@NotNull Post post)
+    {
+        Optional<Account> optionalAccount = accountService.findByEmail(getCurrentUser());
+        Account activeAccount = optionalAccount.isPresent() ? optionalAccount.get() : new Account();
+        return activeAccount.getEmail().equals(post.getAccount().getEmail()) || activeAccount.getAuthorities().toString().contains("ROLE_ADMIN");
+
     }
 
 }
