@@ -1,18 +1,15 @@
 package com.example.arniepanblog.controllers;
 
+import com.example.arniepanblog.config.SeedData;
 import com.example.arniepanblog.models.Account;
 import com.example.arniepanblog.models.Post;
 import com.example.arniepanblog.services.AccountService;
 import com.example.arniepanblog.services.PostService;
-import jakarta.validation.constraints.Null;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,15 +25,6 @@ public class PostController {
 
     @Autowired
     private AccountService accountService;
-
-    public String getCurrentUser() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserDetails) {
-            return ((UserDetails) principal).getUsername();
-        } else {
-            return principal.toString();
-        }
-    }
 
     @GetMapping("/posts/{id}")
     public String getPost(@PathVariable Long id, Model model) {
@@ -55,7 +43,7 @@ public class PostController {
 
     @GetMapping("/posts/new")
     public String createNewPost(Model model) {
-        Optional<Account> optionalAccount = accountService.findByEmail(getCurrentUser());
+        Optional<Account> optionalAccount = accountService.findByEmail(SeedData.getCurrentUserEmail());
         if (optionalAccount.isPresent()) {
             Post post = new Post();
             post.setAccount(optionalAccount.get());
@@ -122,8 +110,16 @@ public class PostController {
 
     Boolean editDeletePerm(@NotNull Post post)
     {
-        Optional<Account> optionalAccount = accountService.findByEmail(getCurrentUser());
-        Account activeAccount = optionalAccount.isPresent() ? optionalAccount.get() : new Account();
+        Optional<Account> optionalAccount = accountService.findByEmail(SeedData.getCurrentUserEmail());
+        Account activeAccount;
+        if (optionalAccount.isPresent())
+        {
+            activeAccount = optionalAccount.get();
+        }
+        else
+        {
+            return false;
+        }
         return activeAccount.getEmail().equals(post.getAccount().getEmail()) || activeAccount.getAuthorities().toString().contains("ROLE_ADMIN");
 
     }

@@ -8,6 +8,8 @@ import com.example.arniepanblog.services.AccountService;
 import com.example.arniepanblog.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -25,6 +27,15 @@ public class SeedData implements CommandLineRunner {
 
     @Autowired
     private AuthorityRepository authorityRepository;
+
+    public static String getCurrentUserEmail() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            return ((UserDetails) principal).getUsername();
+        } else {
+            return principal.toString();
+        }
+    }
 
     @Override
     public void run(String... args) throws Exception {
