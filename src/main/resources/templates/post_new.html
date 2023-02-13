@@ -5,8 +5,23 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Blog :: New Post</title>
-        <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
         <style>
+            .my-blog-background {
+                background-color: lightgrey;
+            }
+
+            .new-post-head {
+                background-color: #c7f5fe;
+            }
+
+            .new-post {
+                background-color: white;
+                width: 66%;
+                margin: 10px auto;
+                padding: 10px;
+                height: 300px;
+                border-radius: 5%;
+            }
             input {
                 height: 30px;
             }
@@ -16,10 +31,14 @@
                 margin: auto;
                 position: relative;
             }
+            h2 {
+                text-align: center;
+            }
         </style>
     </head>
-    <body class="blog-body-background">
-        <div class="blog-head-background">
+
+    <body class="my-blog-background">
+        <div class="new-post-head">
             <a th:href="@{/}">
                 <svg width="240" height="88" viewBox="0 0 240 88">
                     <g id="SvgjsG1219">
@@ -38,7 +57,7 @@
             </a>
         </div>
         <div>
-            <form class="blog-post-container"
+            <form class="new-post"
                   action="#"
                   th:action="@{'/posts/new'}"
                   th:object="${post}"
