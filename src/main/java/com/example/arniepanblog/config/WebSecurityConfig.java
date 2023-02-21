@@ -2,14 +2,12 @@ package com.example.arniepanblog.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
-import static org.apache.catalina.webresources.TomcatURLStreamHandlerFactory.disable;
 
 @EnableWebSecurity
 @Configuration
@@ -19,7 +17,8 @@ public class WebSecurityConfig {
             "/",
             "/login",
             "/register",
-            "/h2-console/*"
+            "/h2-console/*",
+            "/css/**"
     };
 
     @Bean
@@ -51,8 +50,8 @@ public class WebSecurityConfig {
         http.headers().frameOptions().disable();
 
         return http.build();
-    //TODO: When you move away from h2-console you can remove theses
+        //TODO: When you move away from h2-console you can remove theses
 //        http.csrf().disable();
 //        http.headers().frameOptions().disable();
-}
+    }
 }
