@@ -1,5 +1,6 @@
 package com.example.arniepanblog.controllers;
 
+import com.example.arniepanblog.config.FileUploadUtil;
 import com.example.arniepanblog.config.SeedData;
 import com.example.arniepanblog.models.Account;
 import com.example.arniepanblog.models.Post;
@@ -10,11 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Controller
@@ -55,8 +56,17 @@ public class PostController {
     }
 
     @PostMapping("posts/new")
-    public String saveNewPost(@ModelAttribute Post post) {
-        postService.save(post);
+    public String saveNewPost(@ModelAttribute Post post, @RequestParam("image") MultipartFile file) throws IOException{
+        if (!file.isEmpty()) {
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            post.setPhotos(fileName);
+            Post savedPost = postService.save(post);
+            String uploadDir = "post-images/" + savedPost.getId();
+            post.setUploadDir(uploadDir + "/" + fileName);
+            FileUploadUtil.saveFile(uploadDir, fileName, file);
+        } else {
+            postService.save(post);
+        }
         return "redirect:/posts/" + post.getId();
     }
 
@@ -69,12 +79,11 @@ public class PostController {
         //If post exist put it in model
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
-            if (!editDeletePerm(post))
-            {
-                return  "forbidden";
+            if (!editDeletePerm(post)) {
+                return "forbidden";
             }
             model.addAttribute("post", post);
-            return  "post_edit";
+            return "post_edit";
         }
         return "404";
     }
@@ -98,9 +107,8 @@ public class PostController {
         Optional<Post> optionalPost = postService.getById(id);
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
-            if(!editDeletePerm(post))
-            {
-                return  "forbidden";
+            if (!editDeletePerm(post)) {
+                return "forbidden";
             }
             postService.delete(post);
             return "redirect:/";
@@ -108,20 +116,15 @@ public class PostController {
         return "404";
     }
 
-    Boolean editDeletePerm(@NotNull Post post)
-    {
+    Boolean editDeletePerm(@NotNull Post post) {
         Optional<Account> optionalAccount = accountService.findByEmail(SeedData.getCurrentUserEmail());
         Account activeAccount;
-        if (optionalAccount.isPresent())
-        {
+        if (optionalAccount.isPresent()) {
             activeAccount = optionalAccount.get();
-        }
-        else
-        {
+        } else {
             return false;
         }
         return activeAccount.getEmail().equals(post.getAccount().getEmail()) || activeAccount.getAuthorities().toString().contains("ROLE_ADMIN");
-
     }
 
 }

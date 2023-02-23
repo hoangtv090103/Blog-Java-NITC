@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"><head>
+      xmlns:th="http://www.thymeleaf.org">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Blog :: New Post</title>
@@ -31,6 +32,7 @@
           action="#"
           th:action="@{'/posts/new'}"
           th:object="${post}"
+          enctype="multipart/form-data"
           method="POST">
         <input type="hidden" th:field="*{account}"/>
         <input type="hidden" th:field="*{createdAt}"/>
@@ -48,12 +50,13 @@
                       cols="41"
                       style="margin-top: 5px"
                       placeholder="Write your content"></textarea>
-<!--            <br/>-->
-<!--            <input id="new-post-file"-->
-<!--                   type="file"-->
-<!--                   th:field="*{file}"-->
-<!--                   multiple-->
-<!--                   accept="image/png, image/jpg">-->
+            <br/>
+            <div class="form-group">
+                <input id="post-file"
+                       type="file"
+                       name="image"
+                       accept="image/png, image/jpeg, image/jpg">
+            </div>
             <br/>
             <button type="submit">Publish</button>
         </div>

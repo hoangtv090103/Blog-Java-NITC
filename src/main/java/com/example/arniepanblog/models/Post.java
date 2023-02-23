@@ -22,6 +22,10 @@ public class Post {
 
     private String modifiedAt;
 
+    private String photos;
+
+    private String uploadDir;
+
     @NotNull
     @ManyToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)

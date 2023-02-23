@@ -22,6 +22,7 @@
                 <h5 th:text="'Written by ' + ${post.account.firstName}">Account First Name</h5>
                 <h5 th:text="'Create on ' + ${post.createdAt}">Create at</h5>
                 <p th:text="${post.body}">Body Text</p>
+                <img th:src="@{'post-images/1/000004-1-1.jpg'}" alt="Photos" style="size: auto">
             </div>
             <ul sec:authorize="isAuthenticated()">
                 <li><a th:href="@{'/posts/' + ${post.id} + '/edit'}">Edit</a></li>
