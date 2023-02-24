@@ -18,6 +18,9 @@
         .new-post-btn {
             width: 100%;
             height: 30px;
+            font-size: 20px;
+            font-family: "Times New Roman";
+            font-style: italic;
         }
     </style>
 </head>
@@ -39,10 +42,12 @@
     </svg>
 </div>
 <a th:href="@{'/posts/new'}">
-    <button class="new-post-btn">New Post</button>
+    <button class="new-post-btn">
+        <span th:text="'Hi ' + ${account.firstName} + ', what do you want to share today ?'">New Post</span>
+    </button>
 </a>
 <div class="container">
-    <div class="posts-container">
+    <div>
         <div class="post" th:each="post : ${posts}">
             <div class="usr-post">
                 <h2>
@@ -66,9 +71,6 @@
         <form action="#"
               th:action="@{/logout}"
               method="POST">
-            <div>
-                <label>Hi, <span sec:authentication="name">Username</span></label>
-            </div>
             <button type="submit" style="bottom: 0px">Logout</button>
 
         </form>

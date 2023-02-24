@@ -16,7 +16,7 @@
     background-color: lightgrey;
 }
 
-.new-post-head {
+.blog-head {
     background-color: #c7f5fe;
 }
 
@@ -31,4 +31,8 @@
 
 input {
     height: 30px;
+}
+
+form {
+    min-height: fit-content;
 }

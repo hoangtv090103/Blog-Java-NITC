@@ -31,6 +31,12 @@ public class Post {
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
     private Account account;
 
+    @Transient
+    public String getPhotosImagePath() {
+        if (photos == null || id == null) return null;
+        return "/post-image/" + id + "/" + photos;
+    }
+
     @Override
     public String toString() {
         return "Post{" +
@@ -39,6 +45,7 @@ public class Post {
                 ", body='" + body + "'" +
                 ", createdAt='" + createdAt + "*" +
                 ", updatedAt='" + modifiedAt + "'" +
+                ", photos='" + photos + "'" +
                 "}";
     }
 }

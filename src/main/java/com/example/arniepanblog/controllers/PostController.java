@@ -62,7 +62,6 @@ public class PostController {
             post.setPhotos(fileName);
             Post savedPost = postService.save(post);
             String uploadDir = "post-images/" + savedPost.getId();
-            post.setUploadDir(uploadDir + "/" + fileName);
             FileUploadUtil.saveFile(uploadDir, fileName, file);
         } else {
             postService.save(post);
