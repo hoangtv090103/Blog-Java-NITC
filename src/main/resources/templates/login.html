@@ -25,9 +25,6 @@
             background-color: darkcyan;
             border: 1px solid black;
         }
-        div {
-            text-align: center;
-        }
         form {
             min-height: fit-content;
         }
@@ -59,15 +56,17 @@
           action="#"
           th:action="@{/login}"
           method="POST">
-        <input id="email" type="text" name="email" placeholder="Email" autocomplete="on" autofocus/>
-        <input id="password" type="password" name="password" placeholder="Password"/>
+        <input required id="email" type="text" name="email" placeholder="Email" autocomplete="on" autofocus/>
+        <input required id="password" type="password" name="password" placeholder="Password"/>
         <div style="text-align: center">
             <button type="submit">Login</button>
         </div>
+        <br/>
+        <div style="text-align: center;">
+            <a th:href="@{/reset-password}">Forgot Password?</a>
+        </div>
         <hr/>
-        <div>
-            Or
-            <br/>
+        <div style="text-align: center;">
             <a th:href="@{/register}">Register</a>
         </div>
     </form>
