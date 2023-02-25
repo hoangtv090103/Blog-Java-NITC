@@ -1,10 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+    <style>
+        input[type=text]{
+            width: 100%;
+            border-radius: 10px;
+            box-sizing: border-box;
+            border: 1px solid black;
+            padding: 2%;
+            font-size: 20px;
+        }
+
+        textarea{
+            width: 100%;
+            border-radius: 10px;
+            box-sizing: border-box;
+            border: 1px solid black;
+            padding: 2%;
+            font-size: 20px;
+        }
+    </style>
     <title>Blog :: Update Post</title>
 </head>
 <body class="my-blog-background">
@@ -25,11 +44,21 @@
             </g>
         </svg>
     </a>
+    <div style="float: right" sec:authorize="isAuthenticated()">
+        <form action="#"
+              th:action="@{/logout}"
+              method="POST">
+            <button class="logout-btn" type="submit">Logout</button>
+        </form>
+    </div>
 </div>
-<div>
-    <form class="new-post"
+<div class="new-post">
+    <a style="text-decoration: none; float: right; margin-right: 10px" th:href="@{'/posts/' + ${post.id}}">
+        <button class="close-btn">&times;</button>
+    </a>
+    <form
           action="#"
-          th:action="@{'/posts/new'}"
+          th:action="@{'/posts/edit'}"
           th:object="${post}"
           enctype="multipart/form-data"
           method="POST">

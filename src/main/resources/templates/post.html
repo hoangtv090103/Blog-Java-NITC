@@ -26,6 +26,13 @@
             </g>
         </svg>
     </a>
+    <div style="float: right" sec:authorize="isAuthenticated()">
+        <form action="#"
+              th:action="@{/logout}"
+              method="POST">
+            <button class="logout-btn" type="submit">Logout</button>
+        </form>
+    </div>
 </div>
 <div style="min-height: fit-content" class="new-post">
     <div>
@@ -40,7 +47,7 @@
             </a>
             <h5 th:text="'Create on ' + ${post.createdAt}">Create at</h5>
             <hr/>
-            <pre th:text="${post.body}">Body Text</pre>
+            <pre style="font-family: Times" th:text="${post.body}">Body Text</pre>
             <img th:src="@{${post.getPhotosImagePath}}"/>
         </div>
     </div>

@@ -17,11 +17,17 @@
 
         .new-post-btn {
             width: 100%;
-            height: 30px;
-            font-size: 20px;
+            height: 10%;
+            font-size: 30px;
             font-family: "Times New Roman";
             font-style: italic;
+            border-radius: 5px;
+            opacity: 0.6;
         }
+        .new-post-btn:hover {
+            background-color: floralwhite;
+        }
+
     </style>
 </head>
 <body class="my-blog-background">
@@ -39,6 +45,13 @@
             </path>
         </g>
     </svg>
+    <div style="float: right" sec:authorize="isAuthenticated()">
+        <form action="#"
+              th:action="@{/logout}"
+              method="POST">
+            <button class="logout-btn" type="submit">Logout</button>
+        </form>
+    </div>
 </div>
 <a th:href="@{'/posts/new'}">
     <button class="new-post-btn">
@@ -58,7 +71,7 @@
                     <h4 th:text="${post.account.firstName}">Account First Name</h4>
                 </a>
                 <hr/>
-                <pre style="overflow: hidden" th:text="${post.body}">Body Text</pre>
+                <pre style="overflow: hidden; font-family: Times" th:text="${post.body}">Body Text</pre>
             </div>
         </div>
     </div>
@@ -67,14 +80,6 @@
         <li><a th:href="@{/register}">Register</a></li>
         <li><a th:href="@{/login}">Login</a></li>
     </ul>
-    <div sec:authorize="isAuthenticated()">
-        <form action="#"
-              th:action="@{/logout}"
-              method="POST">
-            <button type="submit" style="bottom: 0">Logout</button>
-
-        </form>
-    </div>
 </div>
 </body>
 </html>

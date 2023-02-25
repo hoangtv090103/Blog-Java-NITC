@@ -1,11 +1,42 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Blog :: New Post</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+    <style>
+        input[type=text] {
+            width: 100%;
+            border-radius: 10px;
+            box-sizing: border-box;
+            border: 1px solid black;
+            padding: 2%;
+            font-size: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            border-radius: 10px;
+            box-sizing: border-box;
+            border: 1px solid black;
+            padding: 2%;
+            font-size: 20px;
+        }
+
+        button {
+            width: 40%;
+            font-size: 18px;
+            border: 1px solid black;
+        }
+
+        button:hover {
+            background-color: #c7f5fe;
+            color: white;
+        }
+    </style>
 </head>
 
 <body class="my-blog-background">
@@ -26,14 +57,24 @@
             </g>
         </svg>
     </a>
+    <div style="float: right" sec:authorize="isAuthenticated()">
+        <form action="#"
+              th:action="@{/logout}"
+              method="POST">
+            <button class="logout-btn" type="submit">Logout</button>
+        </form>
+    </div>
 </div>
-<div>
-    <form class="new-post"
-          action="#"
-          th:action="@{'/posts/new'}"
-          th:object="${post}"
-          enctype="multipart/form-data"
-          method="POST">
+<div class="new-post">
+    <a style="text-decoration: none; float: right; margin-right: 10px" th:href="@{/}">
+        <button class="close-btn">&times;</button>
+    </a>
+    <form
+            action="#"
+            th:action="@{'/posts/new'}"
+            th:object="${post}"
+            enctype="multipart/form-data"
+            method="POST">
         <input type="hidden" th:field="*{account}"/>
         <input type="hidden" th:field="*{createdAt}"/>
         <h2 style="text-align: center">NEW POST</h2>
@@ -42,14 +83,16 @@
                    type="text"
                    th:field="*{title}"
                    placeholder="Title"
-                   size="50">
+                   size="50"
+                   required>
             <br/>
             <textarea id="new-post-body"
                       th:field="*{body}"
                       rows="10"
                       cols="41"
                       style="margin-top: 5px"
-                      placeholder="Write your content"></textarea>
+                      placeholder="Write your content"
+                      required></textarea>
             <br/>
             <div class="form-group">
                 <input id="post-file"
@@ -58,7 +101,9 @@
                        accept="image/png, image/jpeg, image/jpg">
             </div>
             <br/>
-            <button type="submit">Publish</button>
+            <div style="text-align: center">
+                <button type="submit">Publish</button>
+            </div>
         </div>
     </form>
 </div>

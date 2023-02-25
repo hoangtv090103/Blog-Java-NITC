@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Blog :: Home</title>
@@ -36,7 +37,15 @@
             </g>
         </svg>
     </a>
+    <div style="float: right" sec:authorize="isAuthenticated()">
+        <form action="#"
+              th:action="@{/logout}"
+              method="POST">
+            <button class="logout-btn" type="submit">Logout</button>
+        </form>
+    </div>
 </div>
+<hr/>
 <div class="container">
     <div>
         <div class="post" th:each="post : ${posts}">
