@@ -27,20 +27,22 @@
         </svg>
     </a>
 </div>
-<div class="new-post">
-    <div class="col-md-8">
+<div style="min-height: fit-content" class="new-post">
+    <div>
         <div class="post">
+            <ul style="float: right" sec:authorize="isAuthenticated()">
+                <li><a th:href="@{'/posts/' + ${post.id} + '/edit'}">Edit</a></li>
+                <li><a th:href="@{'/posts/' + ${post.id} + '/delete'}">Delete</a></li>
+            </ul>
             <h2 th:text="${post.title}">Title</h2>
-            <h5 th:text="'Written by ' + ${post.account.firstName}">Account First Name</h5>
+            <a th:href="@{'/users/' + ${post.account.id}}">
+                <h3 th:text="${post.account.firstName}">Account First Name</h3>
+            </a>
             <h5 th:text="'Create on ' + ${post.createdAt}">Create at</h5>
-            <p th:text="${post.body}">Body Text</p>
+            <hr/>
+            <pre th:text="${post.body}">Body Text</pre>
             <img th:src="@{${post.getPhotosImagePath}}"/>
         </div>
-        <ul sec:authorize="isAuthenticated()">
-            <li><a th:href="@{'/posts/' + ${post.id} + '/edit'}">Edit</a></li>
-            <li><a th:href="@{'/posts/' + ${post.id} + '/delete'}">Delete</a></li>
-
-        </ul>
     </div>
 
 </div>
