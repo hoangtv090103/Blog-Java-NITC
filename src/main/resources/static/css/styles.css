@@ -27,6 +27,19 @@
     padding: 10px;
     height: 300px;
     border-radius: 5%;
+    min-height: fit-content;
+}
+
+.close-btn {
+    font-size: 20px;
+    width: fit-content;
+    border-radius: 5px;
+}
+
+.close-btn:hover {
+    cursor: pointer;
+    background-color: #c7f5fe;
+    color: white;
 }
 
 input {
@@ -35,4 +48,23 @@ input {
 
 form {
     min-height: fit-content;
+}
+
+html {
+    font-family: Times;
+}
+
+.logout-btn {
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 5px;
+    width: fit-content;
+}
+
+.logout-btn:hover {
+    background-color: wheat;
+}
+
+.logout-btn:active {
+    background-color: #c7f5fe;
 }
