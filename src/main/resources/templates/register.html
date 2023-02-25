@@ -58,11 +58,11 @@
           th:object="${account}"
           method="POST">
         <div>
-            <input id="firstname" type="text" th:field="*{firstName}" name="firstname" placeholder="First Name"/>
-            <input id="lastname" type="text" th:field="*{lastName}" name="lastname" placeholder="Last Name"/>
+            <input id="firstname" type="text" th:field="*{firstName}" name="firstname" required placeholder="First Name"/>
+            <input id="lastname" type="text" th:field="*{lastName}" name="lastname" required placeholder="Last Name"/>
         </div>
-        <input id="email" type="text" th:field="*{email}" name="email" placeholder="Email"/>
-        <input id="password" type="password" th:field="*{password}" name="password" placeholder="Password"/>
+        <input id="email" type="text" th:field="*{email}" name="email" required placeholder="Email"/>
+        <input id="password" type="password" th:field="*{password}" name="password" required placeholder="Password"/>
         <div style="text-align: center">
             <button type="submit">Register</button>
             <hr/>
