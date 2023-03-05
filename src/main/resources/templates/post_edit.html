@@ -58,9 +58,8 @@
     </a>
     <form
           action="#"
-          th:action="@{'/posts/edit'}"
+          th:action="@{'/posts/{id}'(id=${post.id})}"
           th:object="${post}"
-          enctype="multipart/form-data"
           method="POST">
         <input type="hidden" th:field="*{account}"/>
         <input type="hidden" th:field="*{createdAt}"/>
@@ -79,13 +78,13 @@
                     style="margin-top: 5px"
                     placeholder="Write your content"></textarea>
             <br/>
-            <div class="form-group">
+            <div style="display: none" class="form-group">
                 <input id="post-file"
                        type="file"
                        name="image"
                        accept="image/png, image/jpeg, image/jpg">
             </div>
-            <br/>
+           <br/>
             <button type="submit">Update Post</button>
         </div>
     </form>

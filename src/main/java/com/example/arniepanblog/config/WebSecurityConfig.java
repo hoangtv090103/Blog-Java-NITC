@@ -40,7 +40,7 @@ public class WebSecurityConfig {
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .defaultSuccessUrl("/", true)
-                .failureUrl("/login?error")
+                .failureUrl("/login-failure")
                 .permitAll()
                 .and()
                 .logout()
