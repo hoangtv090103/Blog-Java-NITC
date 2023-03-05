@@ -1,6 +1,5 @@
 package com.example.arniepanblog.controllers;
 
-import com.example.arniepanblog.config.SeedData;
 import com.example.arniepanblog.models.Account;
 import com.example.arniepanblog.models.Post;
 import com.example.arniepanblog.services.AccountService;
@@ -8,10 +7,7 @@ import com.example.arniepanblog.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +22,9 @@ public class AccountController {
     private AccountService accountService;
 
     @GetMapping("/users/{id}")
-    public String getUserPost(Model model) {
+    public String getUserPost(@PathVariable Long id, Model model) {
         //Find the account by email
-        Optional<Account> optionalAccount = accountService.findByEmail(SeedData.getCurrentUserEmail());
+        Optional<Account> optionalAccount = accountService.findByEmail(postService.getById(id).get().getAccount().getEmail());
 
         //If the account exists, then shove it into model
         if (optionalAccount.isPresent()) {
