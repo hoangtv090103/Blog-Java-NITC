@@ -52,11 +52,15 @@
 <div class="container">
     <div>
         <div class="post" th:each="post : ${posts}">
-            <div class="usr-post">
+            <div class="usr-post" th:if="${post.hasReadPermission}">
                 <h2>
                     <a th:href="@{'/posts/' + ${post.id}}"
                        th:text="${post.title}">Title</a>
                 </h2>
+                <select disabled>
+                    <option th:value="${post.publishMode}"
+                            th:text="${post.publishMode}">Mode</option>
+                </select>
                 <h5 th:text="'Written by ' + ${post.account.firstName}">Account First Name</h5>
                 <h5 th:text="'Published on ' + ${post.createdAt}">Create At</h5>
                 <hr/>

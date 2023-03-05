@@ -1,5 +1,6 @@
 package com.example.arniepanblog.controllers;
 
+import com.example.arniepanblog.config.SeedData;
 import com.example.arniepanblog.models.Account;
 import com.example.arniepanblog.models.Post;
 import com.example.arniepanblog.services.AccountService;
@@ -24,11 +25,14 @@ public class AccountController {
     @GetMapping("/users/{id}")
     public String getUserPost(@PathVariable Long id, Model model) {
         //Find the account by email
-        Optional<Account> optionalAccount = accountService.findByEmail(postService.getById(id).get().getAccount().getEmail());
+        Optional<Account> optionalAccount = accountService.findById(id);
 
         //If the account exists, then shove it into model
         if (optionalAccount.isPresent()) {
             List<Post> userPosts = new ArrayList<>(optionalAccount.get().getPosts());
+            for (Post post : userPosts) {
+                post.setHasReadPermission(getReadPerm(post.getId()));
+            }
             model.addAttribute("posts", userPosts);
             return "users";
         } else {
@@ -57,6 +61,22 @@ public class AccountController {
             }
         }
         return "invalid_email";
+    }
+
+    public Boolean getReadPerm(Long id) {
+        Post post = new Post();
+        Optional<Post> optionalPost = postService.getById(id);
+        if (optionalPost.isPresent()) {
+            post = optionalPost.get();
+        }
+        Optional<Account> optionalAccount = accountService.findByEmail(SeedData.getCurrentUserEmail());
+        Account activeAccount;
+        if (optionalAccount.isPresent()) {
+            activeAccount = optionalAccount.get();
+        } else {
+            return false;
+        }
+        return activeAccount.getEmail().equals(post.getAccount().getEmail()) || activeAccount.getAuthorities().toString().contains("ROLE_ADMIN") || post.getPublishMode().equals("Public");
     }
 
 }

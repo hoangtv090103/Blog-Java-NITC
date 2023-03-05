@@ -26,6 +26,12 @@ public class Post {
 
     private String uploadDir;
 
+    private Boolean hasEditDeletePermission;
+
+    private Boolean hasReadPermission;
+
+    private String publishMode;
+
     @NotNull
     @ManyToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)

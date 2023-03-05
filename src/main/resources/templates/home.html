@@ -53,6 +53,9 @@
               method="POST">
             <button class="logout-btn" type="submit">Logout</button>
         </form>
+        <a th:href="@{'/users/' + ${account.id}}">
+            <button class="profile-btn">My Posts</button>
+        </a>
     </div>
 </div>
 <a th:href="@{'/posts/new'}">
@@ -63,12 +66,16 @@
 <div class="container">
     <div>
         <div class="post" th:each="post : ${posts}">
-            <div style="max-height: 400px; overflow: hidden" class="usr-post">
+            <div style="max-height: 400px; overflow: hidden" class="usr-post" th:if="${post.hasReadPermission}">
                 <h5 style="float: right; margin-top: 0" th:text="'Published on ' + ${post.createdAt}">Create At</h5>
                 <h2>
                     <a th:href="@{'/posts/' + ${post.id}}"
                        th:text="${post.title}">Title</a>
                 </h2>
+                <select disabled>
+                    <option th:value="${post.publishMode}"
+                            th:text="${post.publishMode}">Mode</option>
+                </select>
                 <a th:href="@{'/users/' + ${post.account.id}}">
                     <h4 th:text="${post.account.firstName}">Account First Name</h4>
                 </a>

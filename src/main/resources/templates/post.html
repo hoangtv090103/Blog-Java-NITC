@@ -32,16 +32,25 @@
               method="POST">
             <button class="logout-btn" type="submit">Logout</button>
         </form>
+
+<!--        <a th:href="@{'/users/' + ${account.id}}">-->
+<!--            <button class="profile-btn">My Posts</button>-->
+<!--        </a>-->
     </div>
 </div>
 <div style="min-height: fit-content" class="new-post">
     <div>
         <div class="post">
-            <ul style="float: right" sec:authorize="isAuthenticated()">
+            <ul style="float: right" th:if="${post.hasEditDeletePermission}" sec:authorize="isAuthenticated()">
                 <li><a th:href="@{'/posts/' + ${post.id} + '/edit'}">Edit</a></li>
                 <li><a th:href="@{'/posts/' + ${post.id} + '/delete'}">Delete</a></li>
             </ul>
             <h2 th:text="${post.title}">Title</h2>
+            <select disabled>
+                <option th:value="${post.publishMode}"
+                        th:text="${post.publishMode}">Mode
+                </option>
+            </select>
             <a th:href="@{'/users/' + ${post.account.id}}">
                 <h3 th:text="${post.account.firstName}">Account First Name</h3>
             </a>

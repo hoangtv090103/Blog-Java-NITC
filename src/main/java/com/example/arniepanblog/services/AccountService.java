@@ -27,4 +27,8 @@ public class AccountService {
         return accountRepository.findOneByEmail(email);
     }
 
+    public Optional<Account> findById(Long id) {
+        return accountRepository.findOneById(id);
+    }
+
 }

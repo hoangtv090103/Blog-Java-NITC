@@ -78,6 +78,15 @@
         <input type="hidden" th:field="*{account}"/>
         <input type="hidden" th:field="*{createdAt}"/>
         <h2 style="text-align: center">NEW POST</h2>
+        <div>
+            <h3 th:text="${post.account.firstName}"></h3>
+            <select id="publish-mode"
+                    th:field="*{publishMode}"
+                    style="margin-left: 10px">
+                <option value="Public" selected>Public</option>
+                <option value="Only Me">Only Me</option>
+            </select>
+        </div>
         <div style="text-align: center">
             <input id="new-post-title"
                    type="text"

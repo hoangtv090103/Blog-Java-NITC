@@ -35,6 +35,7 @@ public class PostController {
         //If the post exists, then shove it into model
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
+            post.setHasEditDeletePermission(editDeletePerm(post.getId()));
             model.addAttribute("post", post);
             return "post";
         } else {
@@ -78,7 +79,7 @@ public class PostController {
         //If post exist put it in model
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
-            if (!editDeletePerm(post)) {
+            if (!editDeletePerm(post.getId())) {
                 return "forbidden";
             }
             model.addAttribute("post", post);
@@ -106,7 +107,7 @@ public class PostController {
         Optional<Post> optionalPost = postService.getById(id);
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
-            if (!editDeletePerm(post)) {
+            if (!editDeletePerm(post.getId())) {
                 return "forbidden";
             }
             postService.delete(post);
@@ -115,7 +116,12 @@ public class PostController {
         return "404";
     }
 
-    Boolean editDeletePerm(@NotNull Post post) {
+    public Boolean editDeletePerm(Long id) {
+        Post post = new Post();
+        Optional<Post> optionalPost = postService.getById(id);
+        if (optionalPost.isPresent()) {
+            post = optionalPost.get();
+        }
         Optional<Account> optionalAccount = accountService.findByEmail(SeedData.getCurrentUserEmail());
         Account activeAccount;
         if (optionalAccount.isPresent()) {
@@ -126,4 +132,19 @@ public class PostController {
         return activeAccount.getEmail().equals(post.getAccount().getEmail()) || activeAccount.getAuthorities().toString().contains("ROLE_ADMIN");
     }
 
+    public Boolean getReadPerm(Long id) {
+        Post post = new Post();
+        Optional<Post> optionalPost = postService.getById(id);
+        if (optionalPost.isPresent()) {
+            post = optionalPost.get();
+        }
+        Optional<Account> optionalAccount = accountService.findByEmail(SeedData.getCurrentUserEmail());
+        Account activeAccount;
+        if (optionalAccount.isPresent()) {
+            activeAccount = optionalAccount.get();
+        } else {
+            return false;
+        }
+        return activeAccount.getEmail().equals(post.getAccount().getEmail()) || activeAccount.getAuthorities().toString().contains("ROLE_ADMIN") || post.getPublishMode().equals("public");
+    }
 }
