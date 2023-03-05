@@ -10,4 +10,9 @@ public class LoginController {
     public String getLoginPage() {
         return "login";
     }
+
+    @GetMapping("/login-failure")
+    public String loginFailure() {
+       return "login_failure";
+    }
 }
