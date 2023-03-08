@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +29,8 @@ public class HomeController {
             post.setHasReadPermission(getReadPerm(post.getId()));
         }
         Account account = accountService.findByEmail(SeedData.getCurrentUserEmail()).get();
+        Collections.sort(posts, (o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()));
+
         model.addAttribute("posts", posts); // Send data to views
         model.addAttribute("account", account);
         return "home";

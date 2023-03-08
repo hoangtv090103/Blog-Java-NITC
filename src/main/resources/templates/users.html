@@ -46,11 +46,25 @@
               method="POST">
             <button class="logout-btn" type="submit">Logout</button>
         </form>
+        <a th:href="@{'/users/' + ${currentUser.id}}" th:if="${user.getEmail() != currentUser.getEmail()}">
+            <button class="logout-btn"><span th:text="${currentUser.firstName}"></span></button>
+        </a>
     </div>
 </div>
 <hr/>
 <div class="container">
     <div>
+        <div style="background-color: lightgrey; text-align: center;  margin-top: 0; padding: 2px;">
+            <h2>Welcome to <span th:text="${user.getFirstName()}"></span> post wall</h2>
+        </div>
+        <div class="usr-post" th:if="${posts.size() == 0}">
+            <div class="usr-post" style="text-align: center" th:if="${posts.size() == 0 && user.email == currentUser.email}">
+                <h2>You haven't posted anything. <a th:href="@{/posts/new}">Make a new post now!</a></h2>
+            </div>
+            <div class="usr-post" style="text-align: center" th:if="${ posts.size() == 0 && user.getEmail() != currentUser.getEmail()}">
+                <h2><span th:text="${user.firstName}">User's Firstname</span> hasn't posted anything.</h2>
+            </div>
+        </div>
         <div class="post" th:each="post : ${posts}">
             <div class="usr-post" th:if="${post.hasReadPermission}">
                 <h2>

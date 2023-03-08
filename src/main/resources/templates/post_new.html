@@ -63,6 +63,9 @@
               method="POST">
             <button class="logout-btn" type="submit">Logout</button>
         </form>
+        <a th:href="@{'/users/' + ${account.id}}">
+            <button class="wall-btn"><span th:text="${account.firstName}"></span></button>
+        </a>
     </div>
 </div>
 <div class="new-post">
@@ -103,7 +106,7 @@
                       placeholder="Write your content"
                       required></textarea>
             <br/>
-            <div class="form-group">
+            <div class="form-group" style="display: none">
                 <input id="post-file"
                        type="file"
                        name="image"

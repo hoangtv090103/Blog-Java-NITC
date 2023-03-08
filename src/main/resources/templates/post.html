@@ -33,9 +33,9 @@
             <button class="logout-btn" type="submit">Logout</button>
         </form>
 
-<!--        <a th:href="@{'/users/' + ${account.id}}">-->
-<!--            <button class="profile-btn">My Posts</button>-->
-<!--        </a>-->
+        <a th:href="@{'/users/' + ${account.id}}">
+            <button class="wall-btn"><span th:text="${account.firstName}"></span></button>
+        </a>
     </div>
 </div>
 <div style="min-height: fit-content" class="new-post">
@@ -57,7 +57,7 @@
             <h5 th:text="'Create on ' + ${post.createdAt}">Create at</h5>
             <hr/>
             <pre style="font-family: Times" th:text="${post.body}">Body Text</pre>
-            <img th:src="@{${post.getPhotosImagePath}}"/>
+            <img style="display: none" th:src="@{${post.getPhotosImagePath}}"/>
         </div>
     </div>
 

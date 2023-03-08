@@ -6,7 +6,6 @@ import com.example.arniepanblog.models.Account;
 import com.example.arniepanblog.models.Post;
 import com.example.arniepanblog.services.AccountService;
 import com.example.arniepanblog.services.PostService;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -35,8 +34,12 @@ public class PostController {
         //If the post exists, then shove it into model
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
+            if (!getReadPerm(post.getId())) {
+                return "forbidden";
+            }
             post.setHasEditDeletePermission(editDeletePerm(post.getId()));
             model.addAttribute("post", post);
+            model.addAttribute("account", accountService.findByEmail(SeedData.getCurrentUserEmail()).get());
             return "post";
         } else {
             return "404";
@@ -50,6 +53,7 @@ public class PostController {
             Post post = new Post();
             post.setAccount(optionalAccount.get());
             model.addAttribute("post", post);
+            model.addAttribute("account", optionalAccount.get());
             return "post_new";
         } else {
             return "404";
@@ -75,7 +79,6 @@ public class PostController {
     public String getPostForEdit(@PathVariable Long id, Model model) {
         //Find post by id
         Optional<Post> optionalPost = postService.getById(id);
-
         //If post exist put it in model
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
@@ -83,6 +86,7 @@ public class PostController {
                 return "forbidden";
             }
             model.addAttribute("post", post);
+            model.addAttribute("account", accountService.findByEmail(SeedData.getCurrentUserEmail()).get());
             return "post_edit";
         }
         return "404";
@@ -96,6 +100,7 @@ public class PostController {
             Post existingPost = optionalPost.get();
             existingPost.setTitle(post.getTitle());
             existingPost.setBody(post.getBody());
+            existingPost.setPublishMode(post.getPublishMode());
 
             postService.save(existingPost);
         }
@@ -145,6 +150,6 @@ public class PostController {
         } else {
             return false;
         }
-        return activeAccount.getEmail().equals(post.getAccount().getEmail()) || activeAccount.getAuthorities().toString().contains("ROLE_ADMIN") || post.getPublishMode().equals("public");
+        return activeAccount.getEmail().equals(post.getAccount().getEmail()) || activeAccount.getAuthorities().toString().contains("ROLE_ADMIN") || post.getPublishMode().equals("Public");
     }
 }

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Blog :: Home</title>
+    <title>Blog :: Homepage</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}"/>
     <style>
         .usr-post {
@@ -54,7 +54,7 @@
             <button class="logout-btn" type="submit">Logout</button>
         </form>
         <a th:href="@{'/users/' + ${account.id}}">
-            <button class="profile-btn">My Posts</button>
+            <button class="wall-btn"><span th:text="${account.firstName}"></span></button>
         </a>
     </div>
 </div>

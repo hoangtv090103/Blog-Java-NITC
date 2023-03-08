@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +34,11 @@ public class AccountController {
             for (Post post : userPosts) {
                 post.setHasReadPermission(getReadPerm(post.getId()));
             }
+            Collections.sort(userPosts, (o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()));
+
             model.addAttribute("posts", userPosts);
+            model.addAttribute("user", optionalAccount.get());
+            model.addAttribute("currentUser", accountService.findByEmail(SeedData.getCurrentUserEmail()).get());
             return "users";
         } else {
             return "404";

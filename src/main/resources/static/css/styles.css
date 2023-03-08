@@ -68,3 +68,22 @@ html {
 .logout-btn:active {
     background-color: #c7f5fe;
 }
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+.wall-btn {
+    background-color: darkcyan;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 5px;
+    width: fit-content;
+}
+
+.wall-btn:hover {
+    background-color: lightgray;
+    color: black;
+}
+
