@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Blog :: Post</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}"/>
-</head>
 <body class="my-blog-background">
 <div class="blog-head">
     <a th:href="@{/}">
@@ -40,27 +39,26 @@
 </div>
 <div style="min-height: fit-content" class="new-post">
     <div>
-        <div class="post">
-            <ul style="float: right" th:if="${post.hasEditDeletePermission}" sec:authorize="isAuthenticated()">
-                <li><a th:href="@{'/posts/' + ${post.id} + '/edit'}">Edit</a></li>
-                <li><a th:href="@{'/posts/' + ${post.id} + '/delete'}">Delete</a></li>
-            </ul>
-            <h2 th:text="${post.title}">Title</h2>
-            <select disabled>
-                <option th:value="${post.publishMode}"
-                        th:text="${post.publishMode}">Mode
-                </option>
-            </select>
-            <a th:href="@{'/users/' + ${post.account.id}}">
-                <h3 th:text="${post.account.firstName}">Account First Name</h3>
-            </a>
-            <h5 th:text="'Create on ' + ${post.createdAt}">Create at</h5>
-            <hr/>
-            <pre style="font-family: Times" th:text="${post.body}">Body Text</pre>
-            <img style="display: none" th:src="@{${post.getPhotosImagePath}}"/>
-        </div>
+        <ul style="float: right" th:if="${post.hasEditDeletePermission}" sec:authorize="isAuthenticated()">
+            <li><a th:href="@{'/posts/' + ${post.id} + '/edit'}">Edit</a></li>
+            <li><a th:href="@{'/posts/' + ${post.id} + '/delete'}">Delete</a></li>
+        </ul>
+        <h2 th:text="${post.title}">Title</h2>
+        <select disabled>
+            <option th:value="${post.publishMode}"
+                    th:text="${post.publishMode}">Mode
+            </option>
+        </select>
+        <a th:href="@{'/users/' + ${post.account.id}}">
+            <h3 th:text="${post.account.firstName}">Account First Name</h3>
+        </a>
+        <h5 th:text="'Create on ' + ${post.createdAt}">Create at</h5>
+        <hr/>
     </div>
-
+    <div style="width: 100%">
+        <pre style="font-family: Times; white-space: pre-wrap" th:text="${post.body}">Body Text</pre>
+    </div>
+    <img style="display: none" th:src="@{${post.getPhotosImagePath}}"/>
 </div>
 </body>
 </html>

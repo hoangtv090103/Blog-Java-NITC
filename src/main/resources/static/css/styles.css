@@ -10,6 +10,7 @@
     height: 220px;
     border-radius: 5%;
     overflow: visible;
+    min-height: fit-content;
 }
 
 .my-blog-background {
